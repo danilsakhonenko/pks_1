@@ -24,7 +24,7 @@ public class FtpClient {
         this.server = server;  
         this.username = username;  
         this.password = password;  
-        ftp = new FTPClient();  
+        ftp = new FTPClient(); 
     }  
   
     public boolean connect() {  
@@ -154,14 +154,4 @@ public class FtpClient {
     public void setBinaryTransfer(boolean binaryTransfer) {  
         this.binaryTransfer = binaryTransfer;  
     }  
-  
-    public static void main(String[] args) {  
-        FtpClient ftp = new FtpClient("localhost", "admin", "kras77kvar48");  
-        ftp.connect();  
-        //String[] temp = ftp.listNames("/tuxlog/cbs");  
-        //System.out.println("connect sucess");  
-       // System.out.println(temp.length);  
-        ftp.disconnect();  
-    }  
-
 }
