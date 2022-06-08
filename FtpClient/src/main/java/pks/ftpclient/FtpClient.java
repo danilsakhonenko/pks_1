@@ -19,31 +19,21 @@ public class FtpClient {
     private boolean binaryTransfer = false; 
   
 
-    public FtpClient(String server, String username, String password) {  
-  
+    public FtpClient(String server) {  
         this.server = server;  
-        this.username = username;  
-        this.password = password;  
-        ftp = new FTPClient(); 
+        ftp = new FTPClient();
     }  
   
-    public boolean connect() {  
-        try {  
-            int reply;  
-            ftp.connect(server);   
-            reply = ftp.getReplyCode();  
-  
-            if (FTPReply.isPositiveCompletion(reply)) {  
-                if (ftp.login(username, password)) {  
-                    ftp.enterLocalPassiveMode(); 
-                    System.out.println("Connected");
-                    return true;  
-                }  
-            } else {  
-                ftp.disconnect();  
-                System.out.println("FTP server refused connection.");  
-            }  
-        } catch (IOException e) {  
+    public boolean login(String username, String password){
+        this.username=username;
+        this.password=password;
+        try{
+        if (ftp.login(username, password)) {  
+            ftp.enterLocalPassiveMode(); 
+            System.out.println("Connected");
+            return true;  
+        }
+        }catch (IOException e) {  
             if (ftp.isConnected()) {  
                 try {  
                     ftp.disconnect();  
@@ -51,8 +41,22 @@ public class FtpClient {
                 }  
             }  
             System.out.println("Could not connect to server."+e);  
-        }  
-        return false;  
+        }
+        return false;
+    }
+    
+    public boolean connect() {  
+        int reply;  
+        ftp.connect(server);   
+        reply = ftp.getReplyCode();  
+  
+        if (FTPReply.isPositiveCompletion(reply)) {  
+            return true;
+        } else {  
+            ftp.disconnect();  
+            System.out.println("FTP server refused connection."); 
+            return false;  
+        }
     }
     
     private boolean put(String remoteAbsoluteFile, String localAbsoluteFile) {  
